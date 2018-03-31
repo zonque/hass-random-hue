@@ -12,6 +12,10 @@ Colors are taken randomly from the HSV circle.
 * If it doesn't exist yet, create a sub-folder in your configuration directory called `custom_components/scene`
 * Download the [random_hue.py](random_hue.py) file and copy it to this sub-folder
 
+## Prerequisites
+
+This component requires at hass >= 0.66.
+
 ## Configuration
 
 Add the following snippet to your `configuration.yaml`, or any file that is included by it:

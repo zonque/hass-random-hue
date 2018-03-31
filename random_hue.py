@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import colorsys
 import random
 
 import voluptuous as vol
@@ -50,14 +49,14 @@ class RandomHue(Scene):
 
     @asyncio.coroutine
     def async_activate(self):
-        rgb = None
+        hs = None
 
         for entity in self._lights:
             if not light.is_on(self.hass, entity):
                 return
 
-            if rgb is None or not self._same_color:
-                rgb = tuple(int(i * 255) for i in colorsys.hsv_to_rgb(random.random(), 1, 1))
+            if hs is None or not self._same_color:
+                hs = [ random.random() * 360, 100 ]
 
-            logging.debug("Setting light %s to %s", entity, rgb)
-            light.turn_on(self.hass, entity_id=entity, rgb_color=rgb, white_value=0, transition=self._transition)
+            logging.debug("Setting light %s to %s", entity, hs)
+            light.turn_on(self.hass, entity_id=entity, hs_color=hs, white_value=0, transition=self._transition)
