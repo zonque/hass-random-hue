@@ -5,9 +5,9 @@ import random
 import voluptuous as vol
 
 from homeassistant.components.scene import Scene
-from homeassistant.const import CONF_PLATFORM, CONF_NAME
+from homeassistant.const import CONF_PLATFORM, CONF_NAME, ATTR_ENTITY_ID, SERVICE_TURN_ON
+from homeassistant.components.light import (is_on, ATTR_BRIGHTNESS, ATTR_TRANSITION, ATTR_WHITE_VALUE, ATTR_HS_COLOR, DOMAIN as LIGHT_DOMAIN)
 import homeassistant.helpers.config_validation as cv
-import homeassistant.components.light as light
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -47,16 +47,23 @@ class RandomHue(Scene):
     def name(self):
         return self._name
 
-    @asyncio.coroutine
-    def async_activate(self):
+    def activate(self):
         hs = None
 
         for entity in self._lights:
-            if not light.is_on(self.hass, entity):
+            if not is_on(self.hass, entity):
                 return
 
             if hs is None or not self._same_color:
                 hs = [ random.random() * 360, 100 ]
 
-            logging.debug("Setting light %s to %s", entity, hs)
-            light.turn_on(self.hass, entity_id=entity, hs_color=hs, white_value=0, transition=self._transition)
+            _LOGGER.debug("Setting light %s to %s", entity, hs)
+
+            service_data = {
+                ATTR_ENTITY_ID: entity,
+                ATTR_HS_COLOR: hs,
+                ATTR_WHITE_VALUE: 0,
+                ATTR_TRANSITION: self._transition,
+            }
+
+            self.hass.services.call(LIGHT_DOMAIN, SERVICE_TURN_ON, service_data)
