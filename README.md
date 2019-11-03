@@ -9,8 +9,9 @@ Colors are taken randomly from the HSV circle.
 
 ## Installation
 
-* If it doesn't exist yet, create a sub-folder in your configuration directory called `custom_components/scene`
-* Download the [random_hue.py](random_hue.py) file and copy it to this sub-folder
+* If it doesn't exist yet, create a sub-folder in your configuration directory called `custom_components/random_hue`
+* Download the [scene.py](random_hue.py) and [manifest.json](manifest.json) files and copy them to this sub-folder
+* Restart home-assistant
 
 ## Prerequisites
 
